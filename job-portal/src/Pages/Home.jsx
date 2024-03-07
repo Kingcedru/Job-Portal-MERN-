@@ -123,12 +123,24 @@ export default function Home() {
           {/* pagination here */}
           {result.length > 0 ? (
             <div className="flex justify-center mt-4 space-x-8">
-              <button>previous</button>
-              <span>
+              <button
+                onClick={prevPage}
+                disabled={currentPage === 1}
+                className="hover:underline">
+                previous
+              </button>
+              <span className="mx-2">
                 Page {currentPage} of{" "}
                 {Math.ceil(filteredItems.length / itemsPerPage)}
               </span>
-              <button>next</button>
+              <button
+                onClick={nextPage}
+                disabled={
+                  currentPage === Math.ceil(filteredItems.length / itemsPerPage)
+                }
+                className="hover:underline">
+                next
+              </button>
             </div>
           ) : (
             ""
