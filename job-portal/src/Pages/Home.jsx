@@ -42,6 +42,27 @@ export default function Home() {
     setSelectedCategory(event.target.value);
   };
 
+  // calculate the index range
+  const calculatePageRange = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return { startIndex, endIndex };
+  };
+
+  //function for the next page
+  const nextPage = () => {
+    if (currentPage < Math.ceil(filteredItems.length / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // function for the previous page
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   // main function
   const filteredData = (jobs, selected, query) => {
     let filteredJobs = jobs;
@@ -69,6 +90,10 @@ export default function Home() {
       );
       console.log(filteredJobs);
     }
+
+    //slice the data based on current page
+    const { startIndex, endIndex } = calculatePageRange();
+    filteredJobs = filteredJobs.slice(startIndex, endIndex);
     return filteredJobs.map((data, i) => <Card key={i} data={data} />);
   };
 
@@ -94,6 +119,19 @@ export default function Home() {
               <h3 className="text-lg font-bold mb-2">{result.length} Jobs</h3>
               <p>No data found</p>
             </>
+          )}
+          {/* pagination here */}
+          {result.length > 0 ? (
+            <div className="flex justify-center mt-4 space-x-8">
+              <button>previous</button>
+              <span>
+                Page {currentPage} of{" "}
+                {Math.ceil(filteredItems.length / itemsPerPage)}
+              </span>
+              <button>next</button>
+            </div>
+          ) : (
+            ""
           )}
         </div>
         {/* right side */}
